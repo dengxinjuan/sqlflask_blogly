@@ -12,7 +12,7 @@ def connect_db(app):
 class User(db.Model):
     
     """define the basic user model"""
-    __tablename__ = 'user'
+    __tablename__ = 'blog_user'
 
     id = db.Column(db.Integer,
     primary_key=True,
