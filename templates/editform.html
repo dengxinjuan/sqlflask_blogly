@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<h1>Edit a User</h1>
+<form method="POST">
+<p>First Name:</p>
+<input type="text" name="first_name">
+<p> Last Name:</p>
+<input type="text" name="last_name">
+<p>Image Url:</p>
+<input type="text" name="image_url">
+
+<button><a>Edit!</a></button>
+<button<a href="/users">Cancel</a></button>
+
+</form>
+
+
+{%endblock%}
