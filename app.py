@@ -2,7 +2,7 @@
 
 from flask import Flask, request, redirect, render_template
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db,connect_db,User
+from models import db,connect_db,User,Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -77,5 +77,45 @@ def delete(id):
     db.session.commit()
     return render_template("delete.html",user=deleteuser)
 
+
+@app.route("/users/<int:id>/posts/new", methods=["GET"])
+def add_post(id):
+    """show form for that user"""
+    user = User.query.get_or_404(id)
+    return render_template("addpost.html",user=user)
+
+@app.route("/users/<int:id>/posts/new", methods=["POST"])
+def process_add(id):
+    """ add a post for that user"""
+    user = User.query.get_or_404(id)
+    title = request.form["title"]
+    content= request.form["content"]
+    newpost= Post(title=title,content=content,user_id=id)
+    db.session.add(newpost)
+    db.session.commit()
+
+    return redirect(f"/users/{id}")
+
+@app.route("/posts/<int:postid>",methods=["GET"])
+def show_post(postid):
+    """show a specific post by postid"""
+    post = Post.query.get_or_404(postid)
+    return render_template("post.html",post=post)
+
+@app.route("/posts/<int:postid>/delete")
+def delete_post(postid):
+    """ delete a post"""
+    deletepost = Post.query.get_or_404(postid)
+    db.session.delete(deletepost)
+    db.session.commit()
+
+    return render_template("deletepost.html",deletepost=deletepost)
+
+#todo: GET /posts/[post-id]/edit
+#Show form to edit a post, and to cancel (back to user page).
+
+
+#POST /posts/[post-id]/edit
+#Handle editing of a post. Redirect back to the post view.
 
 

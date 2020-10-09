@@ -20,3 +20,5 @@ db.session.add(katty)
 
 #commit
 db.session.commit()
+
+

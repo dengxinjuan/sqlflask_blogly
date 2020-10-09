@@ -1,0 +1,16 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<ul>
+
+<li>{{post.title}}</li>
+<li>{{post.content}}</li>
+
+</ul>
+<button><a href="post/{{post.id}}/edit">Edit</a></button>
+
+<button><a href="post/{{post.id}}/delete">Delete</a></button>
+
+
+{%endblock%}
