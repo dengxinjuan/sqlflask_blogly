@@ -29,7 +29,7 @@ class User(db.Model):
     nullable=False,
     default="https://www.clker.com/cliparts/d/L/P/X/z/i/no-image-icon-hi.png")
 
-    posts = db.relationship("Post", backref="user")
+    posts = db.relationship("Post", backref="user",cascade="all, delete-orphan")
 
     def get_full_name(self):
         """Get full name for user"""
@@ -50,3 +50,7 @@ class Post(db.Model):
         nullable=False,
         default=datetime.datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('blog_user.id'),nullable=False)
+    
+    def friendly_date(self):
+        """Return nicely-formatted date."""
+        return self.created_at.strftime("%a %b %-d  %Y, %-I:%M %p")

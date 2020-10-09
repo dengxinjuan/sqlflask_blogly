@@ -1,6 +1,6 @@
 """Blogly application."""
 
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template,flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db,connect_db,User,Post
 
@@ -18,7 +18,9 @@ debug = DebugToolbarExtension(app)
 
 @app.route("/")
 def home():
-    return redirect("/users")
+    """ show recent 5 lists of posts"""
+    posts = Post.query.order_by(Post.created_at.desc()).limit(5).all()
+    return render_template("homepage.html", posts=posts)
 
 @app.route("/users")
 def list_users():
@@ -109,13 +111,35 @@ def delete_post(postid):
     db.session.delete(deletepost)
     db.session.commit()
 
+    flash(f"You sucessfully delete the {deletepost.title}!")
+
     return render_template("deletepost.html",deletepost=deletepost)
 
-#todo: GET /posts/[post-id]/edit
-#Show form to edit a post, and to cancel (back to user page).
+
+@app.route("/posts/<int:postid>/edit")
+def show_postedit(postid):
+    """show form to edit a post otherwise back to user page"""
+    post = Post.query.get_or_404(postid)
+    return render_template("postedit.html",post=post)
 
 
-#POST /posts/[post-id]/edit
-#Handle editing of a post. Redirect back to the post view.
+@app.route("/posts/<int:postid>/edit",methods=["POST"])
+def handle_editpost(postid):
+    """Handle editing of a post. Redirect back to the post view"""
+    editpost = Post.query.get_or_404(postid)
+    editpost.title = request.form["edit_title"]
+    editpost.content=request.form["edit_content"]
+    db.session.add(editpost)
+    db.session.commit()
+    flash(f'You sucessfully edited the {editpost.title}')
+
+    return redirect(f"/posts/{postid}")
+
+
+# custome 404 page
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
 
 

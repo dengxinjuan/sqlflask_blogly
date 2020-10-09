@@ -10,4 +10,14 @@
 <button><a href=" /users/{{user.id}}/edit">Edit</a></button>
 <button><a href="/users/{{user.id}}/delete">Delete</a></button>
 
+
+<h1>{{user.first_name}} Posts:</h1>
+{% for post in user.posts %}
+<li>
+  <h2><a href="/posts/{{post.id}}">{{ post.title }}</a></h2>
+  <small>{{ post.created_at}}</small>
+</li>
+{% endfor %}
+
+
 {%endblock%}

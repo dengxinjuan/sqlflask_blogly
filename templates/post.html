@@ -4,13 +4,13 @@
 
 <ul>
 
-<li>{{post.title}}</li>
-<li>{{post.content}}</li>
+<h1>Post Title: </h1>{{post.title}}
+<h1>Post Content:</h1>{{post.content}}
 
 </ul>
-<button><a href="post/{{post.id}}/edit">Edit</a></button>
+<button><a href="{{post.id}}/edit">Edit</a></button>
 
-<button><a href="post/{{post.id}}/delete">Delete</a></button>
+<button><a href="{{post.id}}/delete">Delete</a></button>
 
 
 {%endblock%}

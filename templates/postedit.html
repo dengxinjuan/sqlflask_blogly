@@ -1,0 +1,21 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<h1>Old post:</h1>
+{{post.title}}
+{{post.content}}
+
+<h1>edit post form</h1>
+<form method="POST">
+    <label>Title:</label> <input type="text" name="edit_title" placeholder="ChangePostTitle!">
+    <labe>Post Content:</labe><input type="text" name="edit_content" placeholder="Oh!ChangePostContent!">
+    <button><a href="/users">Cancel</a></button>
+    <button>Change</button>
+
+</form>
+
+
+
+
+{%endblock%}
