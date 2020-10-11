@@ -1,4 +1,4 @@
-from models import User,db
+from models import User,db,Post
 from app import app
 
 #create all tables
@@ -21,4 +21,17 @@ db.session.add(katty)
 #commit
 db.session.commit()
 
+Post.query.delete()
+
+taylor_post=Post(title="vote",content="I spoke to @vmagazine about why I’ll be voting for Joe Biden for president.",user_id=1)
+trump_post=Post(title="JoeBiden",content="Joe Biden is a PUPPET of CASTRO-CHAVISTAS",user_id=2)
+trump_posttwo=Post(title="Whitner",content="Governor Whitmer of Michigan has done a terrible job. ",user_id=2)
+katty_post=Post(title="smile",content="IT’S HERE! IT’S REALLY HERE! (sent from my hospital bed lol)",user_id=3)
+
+db.session.add(taylor_post)
+db.session.add(trump_posttwo)
+db.session.add(trump_post)
+db.session.add(katty_post)
+
+db.session.commit()
 

@@ -2,17 +2,40 @@
 
 {%block content%}
 
-<h1>Blogly Recent Posts</h1>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+<h1 class="display-4 text-danger">Blogly Recent Posts</h1>
+<p class="lead">show first 5 recent posts in this page</p>
+
+</div>
+</div>
+
+
+<div>
 {%for post in posts%}
 
-{{post.id}}
-{{post.title}}
+
+<h1> <small>{{post.id}}</small>
+{{post.title}}</h1>
+</div>
+<h2><a href="/posts/{{post.id}}">
 {{post.content}}
-{{post.user.first_name}}
+</a></h2>
+
+
+<h3> By: 
+{{post.user.first_name}}--{{post.user.last_name}}</h3>
+<small>
 {{post.created_at}}
+</small>
 
 {%endfor%}
+</div>
 
-<button><a href="/users">go to users</a></button>
+<hr>
+<div>
+<a class="btn btn-primary" href="/users" role="button">go to users</a>
+</div>
 
 {%endblock%}
+
