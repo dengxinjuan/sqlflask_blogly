@@ -1,0 +1,23 @@
+{%extends 'base.html'%}
+
+
+{%block content%}
+<div class="col-lg-10">
+<h1>Create a Tag</h1>
+<div class="form-group">
+
+
+<form method="POST">
+<label for="newtag">Name : </label>
+<input type="text" placeholder="Enter a name for the tag" name="newtag" class="form-control">
+
+<br>
+<button class="btn btn-light" href="/tags" >Cancel</button>
+<button class="btn btn-success">Add</button>
+</form>
+
+</div>
+</div>
+
+{%endblock%}
+

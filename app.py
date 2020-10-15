@@ -2,7 +2,7 @@
 
 from flask import Flask, request, redirect, render_template,flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db,connect_db,User,Post
+from models import db,connect_db,User,Post,Tag,PostTag
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -142,4 +142,23 @@ def handle_editpost(postid):
 def not_found(e):
     return render_template("404.html")
 
+
+
+@app.route("/tags",methods=["GET"])
+def list_tags():
+    """list all tags and with links to the tag detail page"""
+    tags = Tag.query.all()
+    return render_template('tag_list.html',tags=tags)
+
+
+@app.route("/tags/<int:tagid>")
+def tag_detail(tagid):
+    """Show detail about a tag. Have links to edit form and to delete."""
+    tag_description = Tag.query.get_or_404(tagid)
+    return render_template("tag_description.html",tag_description=tag_description)
+
+@app.route("/tags/new", methods=["GET"])
+def tag_form():
+    """Shows a form to add a new tag."""
+    return render_template("tag_form.html")
 
