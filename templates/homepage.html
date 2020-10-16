@@ -17,7 +17,7 @@
 
 <h1> <small>{{post.id}}</small>
 {{post.title}}</h1>
-</div>
+
 <h2><a href="/posts/{{post.id}}">
 {{post.content}}
 </a></h2>
@@ -29,13 +29,15 @@
 {{post.created_at}}
 </small>
 
+<h4>Tags:</h4> 
+    {%for tag in post.tags%}
+    <span class="badge badge-success">{{tag.name}}</span>
+    {%endfor%}
+
 {%endfor%}
 </div>
 
-<hr>
-<div>
-<a class="btn btn-primary" href="/users" role="button">go to users</a>
-</div>
+
 
 {%endblock%}
 

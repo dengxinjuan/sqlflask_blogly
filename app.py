@@ -102,7 +102,8 @@ def process_add(id):
 def show_post(postid):
     """show a specific post by postid"""
     post = Post.query.get_or_404(postid)
-    return render_template("post.html",post=post)
+    tags = post.tags
+    return render_template("post.html",post=post,tags=tags)
 
 @app.route("/posts/<int:postid>/delete")
 def delete_post(postid):
@@ -120,7 +121,9 @@ def delete_post(postid):
 def show_postedit(postid):
     """show form to edit a post otherwise back to user page"""
     post = Post.query.get_or_404(postid)
-    return render_template("postedit.html",post=post)
+    alltags = Tag.query.all()
+
+    return render_template("postedit.html",post=post,alltags=alltags)
 
 
 @app.route("/posts/<int:postid>/edit",methods=["POST"])
@@ -129,6 +132,9 @@ def handle_editpost(postid):
     editpost = Post.query.get_or_404(postid)
     editpost.title = request.form["edit_title"]
     editpost.content=request.form["edit_content"]
+
+    tag_ids = [int(num) for num in request.form.getlist("tags")]
+    editpost.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
     db.session.add(editpost)
     db.session.commit()
     flash(f'You sucessfully edited the {editpost.title}')
@@ -160,5 +166,48 @@ def tag_detail(tagid):
 @app.route("/tags/new", methods=["GET"])
 def tag_form():
     """Shows a form to add a new tag."""
-    return render_template("tag_form.html")
+    posts =Post.query.all()
+    return render_template("tag_form.html",posts=posts)
+
+@app.route("/tags/new",methods=['POST'])
+def add_tag():
+    """Process add form, adds tag, and redirect to tag list."""
+
+    post_ids = [int(num) for num in request.form.getlist("posts")]
+    posts = Post.query.filter(Post.id.in_(post_ids)).all()
+    newtag = Tag(name=request.form['newtag'], posts=posts)
+    db.session.add(newtag)
+    db.session.commit()
+
+    return redirect("/tags")
+
+
+@app.route("/tags/<int:tagid>/edit",methods=["GET"])
+def edit_tag(tagid):
+    """show edit tag form"""
+    posts = Post.query.all()
+    return render_template("tag_edit.html",posts=posts)
+
+
+@app.route("/tags/<int:tagid>/edit",methods=["POST"])
+def process_edittag(tagid):
+    """process tag edit """
+    the_tag = Tag.query.get_or_404(tagid)
+    name = request.form['tagedit']
+    the_tag.name = name
+    post_ids = [int(num) for num in request.form.getlist("posts")]
+    posts = Post.query.filter(Post.id.in_(post_ids)).all()
+    the_tag.posts = posts
+    db.session.add(the_tag)
+    db.session.commit()
+
+    return redirect("/tags")
+
+@app.route("/tags/<int:tagid>/delete")
+def delete_tag(tagid):
+    deletetag = Tag.query.get_or_404(tagid)
+    db.session.delete(deletetag)
+    db.session.commit()
+
+    return redirect("/tags")
 

@@ -2,7 +2,7 @@ from models import User,db,Post
 from app import app
 
 #create all tables
-db.drop_all()
+
 db.create_all()
 
 
@@ -34,4 +34,15 @@ db.session.add(trump_post)
 db.session.add(katty_post)
 
 db.session.commit()
+
+Tag.query.delete()
+
+tag_one = Tag(id=1,name="smile everyday")
+tag_two = Tag(id=2,name="BLM")
+tag_three=Tag(id=3,name="rainbow")
+
+db.session.add_all([tag_one,tag_two,tag_three])
+db.session.commit()
+
+
 

@@ -8,9 +8,19 @@
 <h1>Post Content:</h1>{{post.content}}
 
 </ul>
+
+<div> 
+    <h3>Tags:</h3>
+    {%for tag in tags%}
+    <span class="badge badge-success">{{tag.name}}</span>
+    {%endfor%}
+</div>
+<br>
+
 <button><a href="{{post.id}}/edit">Edit</a></button>
 
 <button><a href="{{post.id}}/delete">Delete</a></button>
+
 
 
 {%endblock%}
